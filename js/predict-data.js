@@ -1,0 +1,2 @@
+// Deployed hwes cdc prior applied to the five ledger respondents. Written by figures/predict_data.py.
+window.PREDICT = {"classes": ["18-49", "50-64", "65+"], "marginal": [0.531, 0.242, 0.227], "rows": [{"age": 27, "label": "full work day", "p": [0.621, 0.298, 0.081]}, {"age": 42, "label": "work, ate out", "p": [0.658, 0.25, 0.092]}, {"age": 76, "label": "at home all day", "p": [0.401, 0.209, 0.39]}, {"age": 80, "label": "out on errands", "p": [0.331, 0.247, 0.423]}, {"age": 24, "label": "work and errands", "p": [0.612, 0.328, 0.06]}]};

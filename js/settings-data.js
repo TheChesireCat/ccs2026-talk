@@ -1,0 +1,3 @@
+// Epistorm-Mix survey contact matrices, adults (rows: respondent group, columns: contact group;
+// contacts per day), for 18-49 / 50-64 / 65+, by setting. Raw survey values; the four settings sum to Total.
+window.SETTINGS = {"Household": [[0.919, 0.27, 0.11], [0.553, 0.556, 0.173], [0.176, 0.201, 0.569]], "School": [[0.2, 0.024, 0.001], [0.015, 0.0, 0.0], [0.0, 0.0, 0.0]], "Work": [[1.996, 0.701, 0.312], [1.901, 1.041, 0.245], [0.507, 0.239, 0.108]], "Other": [[0.995, 0.293, 0.165], [1.04, 0.405, 0.231], [1.012, 0.619, 1.015]], "Total": [[4.111, 1.287, 0.589], [3.509, 2.002, 0.648], [1.696, 1.06, 1.691]]};

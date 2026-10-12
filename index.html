@@ -1,0 +1,967 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inferring Mixing Patterns from Mobility Signals · CCS 2026</title>
+  <link rel="icon" href="data:,">  <!-- no favicon; stops the 404 in the console -->
+
+  <!-- reveal.js pinned from the CDN: no npm install, no build step. -->
+  <link rel="stylesheet" href="vendor/reveal/reset.css">
+  <link rel="stylesheet" href="vendor/reveal/reveal.css">
+  <link rel="stylesheet" href="vendor/reveal/theme/white.css">
+  <link rel="stylesheet" href="style.css?v=58">
+  <script src="icons/avatars.js?v=g1"></script>
+  <script src="js/epidemic.js"></script>
+  <script src="js/flights-data.js"></script>
+  <script src="js/gleam.js?v=2"></script>
+  <script src="js/settings-data.js"></script>
+  <script src="js/mixing.js"></script>
+  <script src="js/notrandom-data.js?v=2"></script>
+  <script src="js/notrandom.js?v=g1"></script>
+  <script src="js/crowd.js?v=16"></script>
+  <script src="js/household.js?v=11"></script>
+  <script src="js/settings.js?v=7"></script>
+  <script src="js/surveys.js?v=2"></script>
+  <script src="js/phones.js"></script>
+  <script src="js/geohash.js?v=6"></script>
+  <script src="js/tables-data.js"></script>
+  <script src="js/tables.js?v=3"></script>
+  <script src="js/scale.js?v=5"></script>
+  <script src="js/copresence.js?v=10"></script>
+  <script src="js/borrow.js?v=4"></script>
+  <script src="js/results-data.js"></script>
+  <script src="js/promote-data.js?v=3"></script>
+  <script src="js/pair.js?v=s6"></script>
+  <script src="js/hetero-data.js?v=2"></script>
+  <script src="js/hetero.js?v=s1"></script>
+  <script src="js/entropy.js?v=s2"></script>
+  <script src="js/rankone.js?v=s5"></script>
+  <script src="js/ledger-data.js"></script>
+  <script src="js/ledger.js?v=2"></script>
+  <script src="js/predict-data.js"></script>
+  <script src="js/predict.js?v=s3"></script>
+  <script src="js/behaviour-data.js?v=2"></script>
+  <script src="js/behaviour.js?v=s4"></script>
+  <script src="js/sir.js?v=g1"></script>
+  <script src="js/usmap-data.js"></script>
+  <script src="js/lasagna.js?v=8"></script>
+  <script src="js/levels-data.js"></script>
+  <script src="js/levels.js"></script>
+  <script src="js/agenda.js?v=6"></script>
+  <script src="js/minto.js?v=13"></script>
+  <script src="js/nulls-data.js?v=1"></script>
+  <script src="js/sizesnull.js?v=7"></script>
+  <script src="js/commute-data.js?v=1"></script>
+  <script src="js/commutemap.js?v=4"></script>
+  <script src="js/authors.js?v=2"></script>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- ============================================================ new main deck
+     Redesign for a complex-systems audience (map: .scratch/ccs2026-talk-redesign/). Four acts:
+     why it matters, the opportunity, the catch, what we are doing now. Each slide carries its
+     ticket number; today's detailed slides live unchanged in the appendix. -->
+
+<section class="cover nx" data-ticket="03">
+  <div class="cover-visual anim" id="epi" data-anim="epi"></div>
+  <div class="cover-text">
+  <h1>Inferring Mixing Patterns from Mobility Signals</h1>
+  <p class="subtitle">Opportunities and Limitations</p>
+  <p class="authors">
+    <b>Ankit Ramakrishnan</b><sup>1</sup>,
+    Irene Ferri<sup>1</sup>,
+    Allisandra G. Kummer<sup>2</sup>,
+    Marco Ajelli<sup>2</sup>,
+    Alessandro Vespignani<sup>1</sup>,
+    Maria Litvinova<sup>2</sup>,
+    Matteo Chinazzi<sup>1</sup>
+  </p>
+  <p class="affiliation">
+    <sup>1</sup> Network Science Institute, Northeastern University &nbsp;·&nbsp;
+    <sup>2</sup> Indiana University
+  </p>
+  </div>
+</section>
+
+<section class="nx" data-ticket="r2-03">
+  <div class="body center"><div class="anim" data-anim="agenda" style="width:100%;height:455px"></div></div>
+</section>
+
+<section class="nx" data-ticket="26">
+  <p class="eyebrow">How epidemic models work</p>
+  <h2>The simplest model: everyone meets everyone</h2>
+  <div class="body"><div class="anim" data-anim="crowdmixed" style="width:100%;height:480px"></div>
+    <p class="line">It assumes anyone can meet anyone, equally.</p></div>
+</section>
+
+<section class="nx" data-ticket="27">
+  <p class="eyebrow">Mixing patterns</p>
+  <h2>People do not mix at random</h2>
+  <div class="body"><div class="anim" data-anim="crowdsorted" style="width:100%;height:480px"></div>
+    <p class="line fragment step">Same people, same disease. Put them in their places, and fewer over-65s get infected: 43% instead of 58%.</p></div>
+</section>
+
+<section class="nx" data-ticket="05">
+  <p class="eyebrow">Mixing patterns</p>
+  <h2>Every setting has its own matrix</h2>
+  <div class="body"><div class="anim" data-anim="settings" style="width:100%;height:480px"></div>
+    <p class="line">All contacts, split by where people meet: each cell on top is the sum of the cells below.</p></div>
+</section>
+
+<section class="nx" data-ticket="r2-07">
+  <p class="eyebrow">Mixing patterns</p>
+  <h2>The matrix goes into the force of infection</h2>
+  <div class="body"><div class="anim" data-anim="minto" style="width:100%;height:480px"></div>
+    <p class="line">Each group's force of infection depends on whom it meets.</p></div>
+</section>
+
+<section class="nx" data-ticket="06">
+  <p class="eyebrow">Mixing patterns</p>
+  <h2>The tables we want: who meets whom, by age and by race</h2>
+  <div class="body"><div class="anim" data-anim="tables" style="width:100%;height:455px"></div>
+    <p class="line">Age is not enough: leave out race or income, and models can underestimate R<sub>0</sub>.</p>
+    <p class="credit">Epistorm-Mix contact survey: Kummer, Litvinova, Ajelli and colleagues, Indiana University, part of Epistorm. Beyond age: Manna et al., Science Advances 2024.</p></div>
+</section>
+
+<section class="nx" data-ticket="31">
+  <p class="eyebrow">Mixing patterns</p>
+  <h2>Today, these tables come from surveys</h2>
+  <div class="body"><div class="anim" data-anim="surveys" style="width:100%;height:462px"></div>
+    <p class="line">The gold standard, but small, costly, and one snapshot.</p>
+    <p class="credit">Epistorm-Mix: Litvinova et al., medRxiv 2025. ATUS cost: US Office of Management and Budget, ICR 202512-1220-003.</p></div>
+</section>
+
+<section class="nx" data-ticket="32">
+  <p class="eyebrow">What phones can tell us</p>
+  <h2>Everyone has a phone</h2>
+  <div class="body"><div class="anim" data-anim="phones" style="width:100%;height:455px"></div></div>
+</section>
+
+<section class="nx" data-ticket="33">
+  <p class="eyebrow">What phones can tell us</p>
+  <h2>From phones to contacts</h2>
+  <div class="body"><div class="anim" data-anim="geohash" style="width:100%;height:470px"></div>
+    <p class="line">Same cell, overlapping time: a contact. We already compute this every day.</p></div>
+</section>
+
+<section class="nx" data-ticket="07">
+  <p class="eyebrow">What phones can tell us</p>
+  <h2>Contacts add up to a table for any place, any week</h2>
+  <div class="body"><div class="anim" data-anim="copresence" style="width:100%;height:455px"></div>
+    <p class="line">A survey is one snapshot; this can be rebuilt every week.</p></div>
+</section>
+
+<section class="nx" data-ticket="08">
+  <p class="eyebrow">What phones can tell us</p>
+  <h2>But a phone does not know your age</h2>
+  <div class="body"><div class="anim" data-anim="borrow" style="width:100%;height:455px"></div>
+    <p class="line">So each phone borrows its neighbourhood's mix, and every contact is shared across the table.</p></div>
+</section>
+
+<section class="nx" data-ticket="r2-08a">
+  <p class="eyebrow">What phones can tell us</p>
+  <h2>For race, the phone table looks like the survey</h2>
+  <div class="body"><div class="anim" data-anim="pair" data-dim="race" data-bars="none" data-static="1" style="width:100%;height:455px"></div></div>
+</section>
+
+<section class="nx" data-ticket="r2-08b">
+  <p class="eyebrow">What phones can tell us</p>
+  <h2>Null 1: people meet in proportion to group sizes</h2>
+  <div class="body"><div class="anim" data-anim="sizesnull" style="width:100%;height:455px"></div>
+    <div class="steps"><span class="fragment step"></span><span class="fragment step"></span><span class="fragment step"></span><span class="fragment step"></span></div>
+    <p class="line">No geography at all: every row is the same mix, scaled by how much that group meets.</p></div>
+</section>
+
+<section class="nx" data-ticket="r2-08c">
+  <p class="eyebrow">What phones can tell us</p>
+  <h2>Null 2: people meet where they commute</h2>
+  <div class="body"><div class="anim" data-anim="commutemap" style="width:100%;height:455px"></div>
+    <p class="line">No phones: census commuting flows, with the same neighbourhood labels.</p></div>
+</section>
+
+<section class="nx" data-ticket="09">
+  <p class="eyebrow">What phones can tell us</p>
+  <h2>For race, borrowing the label works</h2>
+  <div class="body"><div class="anim" data-anim="pair" data-dim="race" data-static="1" style="width:100%;height:455px"></div>
+    <p class="line">Most of this is where we live: the census alone gets 0.88.</p></div>
+</section>
+
+<section class="nx" data-ticket="10">
+  <p class="eyebrow">What phones can tell us</p>
+  <h2>For age, it does not</h2>
+  <div class="body"><div class="anim" data-anim="pair" data-dim="age" data-bars="step" data-static="1" style="width:100%;height:455px"></div>
+    <div class="steps"><span class="fragment step"></span></div>
+    <p class="line">The survey has a strong diagonal: people meet their own age. Phones barely see it.</p></div>
+</section>
+
+<section class="nx" data-ticket="11">
+  <p class="eyebrow">What phones can tell us</p>
+  <h2>Neighbourhoods sort us by race, not by age</h2>
+  <div class="body"><div class="anim" data-anim="hetero" data-static="1" style="width:100%;height:455px"></div>
+    <p class="line">A borrowed label can only carry what the neighbourhood already sorts.</p></div>
+</section>
+
+<section class="nx" data-ticket="22">
+  <p class="eyebrow">What phones can tell us</p>
+  <h2>Not just New York: almost every US neighbourhood is mixed by age</h2>
+  <div class="body"><div class="anim" data-anim="entropy" data-static="1" style="width:100%;height:455px"></div>
+    <p class="line">All 84,532 US census tracts. Race spreads across the whole range; age piles up near 1.</p></div>
+</section>
+
+<section class="nx" data-ticket="23">
+  <p class="eyebrow">What phones can tell us</p>
+  <h2>So the age table is just group sizes, multiplied</h2>
+  <div class="body"><div class="anim" data-anim="rankone" data-static="1" style="width:100%;height:455px"></div>
+    <p class="line">Same mix everywhere means group sizes are all the phones can see.</p></div>
+</section>
+
+<section class="nx" data-ticket="12">
+  <p class="eyebrow">What behaviour promises</p>
+  <h2>Your day says something about your age</h2>
+  <div class="body"><div class="anim" data-anim="ledger" style="width:100%;height:455px"></div>
+    <p class="line">Where you are, hour by hour, is something a phone does see.</p></div>
+</section>
+
+<section class="nx" data-ticket="13">
+  <p class="eyebrow">What behaviour promises</p>
+  <h2>Learn it from diaries, apply it to phones</h2>
+  <div class="body"><div class="anim" data-anim="predict" data-static="1" style="width:100%;height:455px"></div>
+    <p class="line">Not an age, but the guess moves. This is where we are now.</p></div>
+</section>
+
+<section class="nx" data-ticket="14">
+  <p class="eyebrow">What behaviour promises</p>
+  <h2>First results: behaviour brings back some of the age structure</h2>
+  <div class="body"><div class="anim" data-anim="behaviour" data-static="1" style="width:100%;height:455px"></div>
+    <p class="line">Better where work drives contact. Community contact, and the oldest ages, are still open.</p></div>
+</section>
+
+<section class="nx" data-ticket="15">
+  <p class="eyebrow">To close</p>
+  <h2>Space sorts us by race, not by age; behaviour can fill the gap</h2>
+  <div class="body"><div class="close-grid">
+    <div class="take"><span class="ic" style="--m:url(icons/location-dot.svg);color:#253494"></span>
+      <div><p class="big-s">0.90</p><p class="take-h">Race: neighbourhoods sort us, so any neighbourhood label recovers it, census or phones.</p></div></div>
+    <div class="take"><span class="ic" style="--m:url(icons/person-walking.svg);color:#2c7fb8"></span>
+      <div><p class="big-s">0.32</p><p class="take-h">Age: neighbourhoods do not sort us, so the label has to come from behaviour. Early results are promising.</p></div></div>
+    <div class="take"><span class="ic" style="--m:url(icons/calendar-days.svg);color:#41b6c4"></span>
+      <div><p class="big-s">any place, any week</p><p class="take-h">The prize: contact matrices on the fly, from data that already exist.</p></div></div>
+  </div>
+  </div>
+</section>
+
+<section class="cover nx final" data-ticket="r2-10">
+  <div class="final-head"><h1>Inferring Mixing Patterns from Mobility Signals</h1><p class="subtitle">Opportunities and Limitations</p></div>
+  <div class="final-grid">
+    <div class="person netsi"><img src="img/people/ramakrishnan.jpg" alt="Ankit Ramakrishnan"><div><span class="first">Ankit</span><span class="last">Ramakrishnan</span><span class="role">PhD Student</span><span class="aff">Network Science Institute</span></div></div>
+    <div class="person netsi"><img src="img/people/ferri.jpg" alt="Irene Ferri"><div><span class="first">Irene</span><span class="last">Ferri</span><span class="role">Postdoctoral Researcher</span><span class="aff">Network Science Institute</span></div></div>
+    <div class="person iu"><img src="img/people/kummer.jpg" alt="Allisandra G. Kummer"><div><span class="first">Allisandra G.</span><span class="last">Kummer</span><span class="role">Epidemiologist</span><span class="aff">Emory, formerly Indiana</span></div></div>
+    <div class="person iu"><img src="img/people/ajelli.jpg" alt="Marco Ajelli"><div><span class="first">Marco</span><span class="last">Ajelli</span><span class="role">Professor</span><span class="aff">Indiana University</span></div></div>
+    <div class="person netsi"><img src="img/people/vespignani.jpg" alt="Alessandro Vespignani"><div><span class="first">Alessandro</span><span class="last">Vespignani</span><span class="role">Distinguished Professor</span><span class="aff">Director, NetSI</span></div></div>
+    <div class="person iu"><img src="img/people/litvinova.jpg" alt="Maria Litvinova"><div><span class="first">Maria</span><span class="last">Litvinova</span><span class="role">Assistant Professor</span><span class="aff">Indiana University</span></div></div>
+    <div class="person netsi"><img src="img/people/chinazzi.jpg" alt="Matteo Chinazzi"><div><span class="first">Matteo</span><span class="last">Chinazzi</span><span class="role">Research Associate Professor</span><span class="aff">Network Science Institute</span></div></div>
+  </div>
+  <div class="final-note">
+    <p class="thx">Thank you.</p>
+    <p class="mail">ramakrishnan.ank@northeastern.edu</p>
+    <p class="fund-h">Funding</p>
+    <p class="fund">This project was made possible by cooperative agreement <span class="nobr">CDC-RFA-FT-23-0069</span> from the CDC's Center for Forecasting and Outbreak Analytics. Its contents are solely the responsibility of the authors and do not necessarily represent the official views of the Centers for Disease Control and Prevention.</p>
+  </div>
+</section>
+
+<!-- ============================================================ appendix -->
+<section class="divider">
+  <div><p class="eyebrow">Backup</p><h2>Appendix</h2></div>
+</section>
+
+<section class="nx" data-moved="2026-10-11, from the main deck" data-ticket="28">
+  <p class="eyebrow">Mixing patterns</p>
+  <h2>How a contact matrix is built</h2>
+  <div class="body"><div class="anim" data-anim="household" style="width:100%;height:480px"></div>
+    <div class="steps"><span class="fragment step"></span><span class="fragment step"></span><span class="fragment step"></span><span class="fragment step"></span><span class="fragment step"></span><span class="fragment step"></span></div>
+    <p class="line">Each person's contacts land in their row; average over people, and you have the matrix.</p></div>
+</section>
+
+<section class="nx" data-moved="2026-10-05, split into surveys and phones" data-ticket="19">
+  <p class="eyebrow">The opportunity</p>
+  <h2>A survey sees 1,930 people. Phones see millions.</h2>
+  <div class="body"><div class="anim" data-anim="scale" style="width:100%;height:455px"></div>
+    <p class="line">Same two windows in 2024. Every square is 1,930 people.</p></div>
+</section>
+
+<!-- moved from the main deck 2026-10-05 (Matteo, via Ankit): levels, the layer stack, GLEAM -->
+<section class="nx" data-moved="2026-10-05" data-ticket="18">
+  <p class="eyebrow">Why it matters</p>
+  <h2>One pandemic, seen at every level</h2>
+  <div class="body center"><div class="anim" data-anim="levels" style="width:100%;height:540px"></div></div>
+</section>
+
+<section class="nx" data-moved="2026-10-05" data-ticket="25">
+  <p class="eyebrow">Why it matters</p>
+  <h2>A model, built layer by layer</h2>
+  <div class="body center"><div class="anim" data-anim="lasagna" style="width:100%;height:545px"></div></div>
+</section>
+
+<section class="nx dark light" data-moved="2026-10-05" data-ticket="04">
+  <div class="fullbleed anim" data-anim="gleam"></div>
+  <p class="eyebrow">Why it matters</p>
+  <h2>Models put the layers together</h2>
+  <p class="cite dark-cite light-cite">GLEAM, the Global Epidemic and Mobility model built at the MOBS lab. Network: the 400 busiest airports.</p>
+</section>
+
+
+<section class="nx" data-ticket="17" data-moved="2026-10-02, folded into the GLEAM inset">
+  <p class="eyebrow">Why it matters</p>
+  <h2>Inside each city, people move between compartments</h2>
+  <div class="body center"><div class="anim" data-anim="sir" style="width:100%;height:540px"></div></div>
+</section>
+
+
+<!-- ============================================================ motivation -->
+<section>
+  <p class="eyebrow">Why this matters</p>
+  <h2>The contact matrix is the coupling term in the model</h2>
+  <div class="body">
+  <div class="full"><img src="img/ccs-groups.svg" alt="age groups as a graph, and the same contact as a matrix"></div>
+  <p class="big-math small" style="margin-top:.3em">
+    \[ \lambda_a(t) \;=\; \beta \sum_b \; M[a,b] \; \frac{I_b(t)}{N_b} \]
+  </p>
+  </div>
+  <p class="footnote">Groups, the contact within and between them, and the per-capita rate
+  \(M[a,b]\) that a transmission model consumes. \(M\) fixes the age profile of the
+  epidemic and \(R_0\) is the leading eigenvalue of the next-generation matrix built from
+  it, and it is one of the few inputs that is <strong>measured</strong> rather than fitted
+  to case data. Diaries are how it is measured, and whether mobility can measure it instead
+  turns out to be <strong>dimension-dependent</strong>. Real numbers: the survey's coarse
+  bins, Other setting, US populations; widths are total volume, the symmetric object.</p>
+</section>
+
+
+
+<section>
+  <p class="eyebrow">The problem</p>
+  <h2>A survey gives one matrix. A model wants thousands.</h2>
+  <div class="body">
+  <div class="full"><img src="img/ccs-gap.svg" alt="one survey matrix against the grid a model consumes"></div>
+  </div>
+  <p class="footnote">Tiles are illustrative. A diary study observes a few thousand
+  respondents over two waves; the mobility panel observes tens of millions of devices over
+  roughly 2100 days. Four orders of magnitude in people, three in time. Diary standard:
+  Mossong et al. 2008; the reference used throughout is Epistorm-Mix (Litvinova et al.
+  2025), from co-authors on this work; demographic projection to unsurveyed settings:
+  Prem et al. 2017.</p>
+</section>
+
+<section>
+  <p class="eyebrow">The reference</p>
+  <h2>The survey reports contacts by setting</h2>
+  <div class="body">
+  <div class="full"><img src="img/ccs-settings.svg" alt="the survey's age and race matrices by setting"></div>
+  </div>
+  <p class="footnote">Epistorm-Mix, adult respondents; age in five-year bins and race in
+  five, rows respondent and columns contact. The four settings partition Total exactly.
+  A phone panel cannot see inside a household and ours is adults only, so of these four the
+  one it could plausibly reproduce is community contact: <strong>Other</strong>, at
+  \(29\%\) of all reported contacts. Every comparison that follows is against the
+  reciprocity-corrected Other matrix. A cell is <strong>contacts per capita per day</strong>
+  and agreement is Pearson correlation on log cells, \(\log r\), which is scale-free.</p>
+</section>
+
+
+
+<!-- ============================================================ construction -->
+<section>
+  <p class="eyebrow">The data</p>
+  <h2>Where the data comes from</h2>
+  <div class="body">
+  <div class="full"><img src="img/ccs-provenance.svg" alt="from a consented ping to the published dashboard"></div>
+  </div>
+  <p class="footnote">Location-based services data: GPS pings contributed with permission
+  through mobile apps, aggregated by a vendor into <strong>stops</strong>, a place and a
+  dwell time. Epistorm, the CDC-funded outbreak analytics centre, already turns this feed
+  into daily county-level mobility indices and publishes them on a public dashboard. The
+  contact matrices come off the same pipeline, one step further along. What the panel never
+  carries is who anyone is.</p>
+</section>
+
+<section>
+  <p class="eyebrow">Construction · 1 of 2</p>
+  <h2>A contact is co-presence of two stops</h2>
+  <div class="body">
+  <div class="full"><img src="img/ccs-contact.svg" alt="stops and co-presence"></div>
+  </div>
+  <p class="footnote">Dwell episodes, not raw pings. Spatial and temporal overlap with a
+  five-minute floor. Overlapping-stop artefacts in the vendor feed are repaired upstream.</p>
+</section>
+
+
+
+<section>
+  <p class="eyebrow">Construction · 2 of 2</p>
+  <h2>Demographic labels are borrowed from geography</h2>
+  <div class="body">
+  <div class="full"><img src="img/ccs-propmix.svg" alt="proportional mixing"></div>
+  </div>
+  <p class="footnote">Devices are anonymous, so the label is the census composition of the
+  residence tract, applied to every resident of it. This is proportional mixing, and it is
+  an <strong>ecological inference</strong>: a group-level distribution standing in for an
+  individual attribute. Every result that follows is a consequence of it.</p>
+</section>
+
+
+
+<!-- ============================================================ results -->
+<section>
+  <p class="eyebrow">Results · 1 of 2</p>
+  <h2>Race and ethnicity: the reconstruction tracks the survey</h2>
+  <div class="body">
+  <div class="full"><img src="img/ccs-race.svg" alt="race matrices, ours and the survey"></div>
+  </div>
+  <p class="footnote">May 2024, Other setting, reciprocity-corrected, 25 cells:
+  \(\log r = 0.903\). Panels are rescaled to a common total, so colour compares shape only;
+  \(\log r\) is scale-free either way. Fitting one global scalar instead puts \(80\%\) of
+  cells within a factor of two.</p>
+</section>
+
+<section>
+  <p class="eyebrow">Results · 2 of 2</p>
+  <h2>Age: the same pipeline returns a near-flat matrix</h2>
+  <div class="body">
+  <div class="full"><img src="img/ccs-age.svg" alt="age matrices, ours and the survey"></div>
+  </div>
+  <p class="footnote">Five-year bins, 181 cells over the subset the survey can report:
+  \(\log r = 0.324\). Panels rescaled to a common total, as before. The survey has a
+  diagonal and the parent-child ridges off it; we have neither. Three coarse bins reach
+  \(0.661\), and a two-parameter power-law calibration still only reaches \(R^2 = 0.11\).</p>
+</section>
+
+
+
+<!-- ============================================================ mechanism -->
+<section>
+  <p class="eyebrow">Mechanism · 1 of 2</p>
+  <h2>Tracts are sorted by race and not by age</h2>
+  <div class="body">
+  <div class="full"><img src="img/ccs-hetero.svg" alt="tract entropy and largest-bin share"></div>
+  </div>
+  <p class="footnote">All 84,532 populated US tracts, ACS 2019–2023. Dissimilarity runs \(0.33\) to \(0.61\) across race bins against \(0.17\) to
+  \(0.35\) across age bins.</p>
+</section>
+
+<section>
+  <p class="eyebrow">Mechanism · 2 of 2</p>
+  <h2>Homogeneous tracts force proportional mixing to rank one</h2>
+  <div class="body">
+  <p class="big-math small">
+    \[ p_a^A \approx p_a^{\text{nat}} \;\;\forall A
+       \quad\Longrightarrow\quad
+       M[a,b] \;\propto\; p_a^{\text{nat}} p_b^{\text{nat}} \sum_{A,B} W_{AB} \]
+  </p>
+  <div class="full"><img src="img/ccs-rankone.svg" alt="margins-only prediction against our age matrix"></div>
+  </div>
+  <p class="footnote">The prediction carries the marginals and nothing else. Our age matrix
+  agrees with it at \(\log r = 0.993\). The control is the same test on the survey, whose
+  own margins reproduce it at only \(0.507\). Effective rank says the same thing:
+  \(1.11\) for our matrix against \(3.69\) for the survey.</p>
+</section>
+
+<!-- ============================================================ nulls -->
+<section>
+  <p class="eyebrow">Testing that explanation</p>
+  <h2>If it is only margins and geography, a null should do as well</h2>
+  <div class="body">
+  <div class="full"><img src="img/ccs-nullall.svg" alt="ours, the two nulls, and the survey"></div>
+  </div>
+  <p class="footnote">Two nulls, neither containing a single device: census commuting flows
+  as contact opportunity, and the GLEAM-style kernel that allocates commuters in time and
+  mixes them inside each patch. On race the three span \(0.879\) to \(0.903\), which 25
+  cells cannot separate. On age we beat both nulls, but from \(0.324\), so the margin is
+  real and the level is useless. Null 1 also reproduces our own matrix at
+  \(\log r = 0.981\).</p>
+</section>
+
+<!-- ============================================================ the behavioural prior -->
+<section>
+  <p class="eyebrow">Can the label be fixed? · 1 of 2</p>
+  <h2>Train the label on diaries, apply it to devices</h2>
+  <div class="body">
+  <div class="full"><img src="img/ccs-ledger.svg" alt="the ATUS ledger and the panel device row"></div>
+  </div>
+  <p class="footnote">Rows are people, columns are the <strong>52 features</strong> the
+  model actually uses: the fraction of each clock hour spent at each place, one block per
+  place. Five real diary days, rebuilt minute by minute from the 2024 survey. The hatched
+  row is a panel device: its stops give the same 52 numbers and no age. A
+  replicate-weighted multinomial logit fills it in, giving \(q_i(a)\) per device. The
+  representation is per hour on purpose: the model sees <strong>when</strong>, not just how
+  long.</p>
+</section>
+
+<section>
+  <p class="eyebrow">Can the label be fixed? · 2 of 2</p>
+  <h2>The predicted label adds rows, not assortativity</h2>
+  <div class="body">
+  <div class="full"><img src="img/ccs-atus-matrix.svg" alt="residence prior, behavioural prior, survey"></div>
+  </div>
+  <p class="footnote">Age, five-year bins, weekday only, against the reciprocity-corrected
+  Other survey. Community contact gets <strong>worse</strong>, \(\log r\;0.324 \to 0.082\),
+  with zero of 4000 bootstrap draws favouring the predicted label. Work gets
+  <strong>better</strong>, \(+0.170\), and that is the tell rather than a consolation: the
+  behavioural prior is a proxy for employment, and Work is the one setting where employment
+  is the right answer. Each panel rescaled to a common total.</p>
+</section>
+
+
+
+<section>
+  <p class="eyebrow">Consequence · 1 of 2</p>
+  <h2>Who the model would say gets infected first</h2>
+  <div class="body">
+  <div class="full"><img src="img/ccs-eigen.svg" alt="dominant eigenvector, survey against ours"></div>
+  </div>
+  <p class="footnote">The <strong>dominant eigenvector</strong> of each age matrix, normalised
+  to sum to one. With susceptibility equal across groups the next-generation matrix is
+  proportional to the contact matrix, so this is the relative share of infections in each
+  age group during early exponential growth. The two agree at cosine \(0.979\) and \(R_0\)
+  is off by only \(1\%\), so aggregate quantities survive; the oldest groups, which drive
+  severity, do not. Our main-pipeline matrix, residence prior, against the
+  reciprocity-corrected Other survey.</p>
+</section>
+
+<section>
+  <p class="eyebrow">Consequence · 2 of 2</p>
+  <h2>And how many mixing patterns it actually contains</h2>
+  <div class="body">
+  <div class="full"><img src="img/ccs-spectrum.svg" alt="normalised singular-value spectrum of both matrices"></div>
+  </div>
+  <p class="footnote">Singular values of each matrix, normalised to sum to one: the share of
+  the matrix explained by each independent mixing pattern. <strong>Effective rank</strong> is
+  the participation ratio \(1/\sum_k s_k^2\), which is \(1\) for a rank-one matrix and
+  \(13\) for a flat spectrum. The survey spends its structure across several patterns; we
+  put \(95\%\) into one. This is the rank-one result of the mechanism slide, as a number.</p>
+</section>
+
+
+
+<!-- ============================================================ conclusions -->
+<section>
+  <p class="eyebrow">Conclusions · 1 of 2</p>
+  <h2>When mobility-based reconstruction is appropriate</h2>
+  <div class="body">
+  <table class="rules">
+    <tr><th>dimension</th><th>tract entropy</th><th class="num">dissimilarity</th>
+        <th class="num">vs survey</th><th>recommendation</th></tr>
+    <tr><td>race and ethnicity</td><td>0.49, broad</td><td class="num">0.52</td>
+        <td class="num">0.90</td><td>use, and report a null</td></tr>
+    <tr><td>income, urbanicity</td><td>0.87, intermediate</td><td class="num">0.28</td>
+        <td class="num">0.34</td><td>marginals only, not the matrix</td></tr>
+    <tr><td>age</td><td>0.93, a spike</td><td class="num">0.21</td>
+        <td class="num">0.32</td><td>do not use at usable binnings</td></tr>
+  </table>
+  <p style="font-size:.78em;margin-top:1.1em">Mobility recovers the mixing structure of
+  attributes that space already sorts. The heterogeneity statistics are computable
+  <strong>before any mobility data is loaded</strong>, so this is a screening rule rather
+  than a post-hoc one.</p>
+  </div>
+  <p class="footnote">Race and age are the Other setting, reciprocity-corrected. Income is
+  the honest middle case, and its setting split was not run: its marginals transfer at
+  \(0.80\) while the matrix reaches \(0.34\) on Total.</p>
+</section>
+
+<section>
+  <p class="eyebrow">Conclusions · 2 of 2</p>
+  <h2>Requirements for an individual-level prior</h2>
+  <div class="body center">
+  <div class="claim"><div class="t">informative</div>
+    <p class="b">real variance in the label across devices, not a tract average repeated</p></div>
+  <div class="claim"><div class="t">identified</div>
+    <p class="b">not a function of the same quantity that drives contact volume. This is the
+    condition our behavioural prior fails.</p></div>
+  <div class="claim"><div class="t">supervised</div>
+    <p class="b">labels genuinely linked to devices, which no mobility feed provides</p></div>
+  <p style="font-size:.8em;margin-top:.9em">Behaviour derived from mobility supplies the
+  first condition only, and weakly: the structure it injects is \(0.017\) against the
+  \(1.77\) a perfect per-device label would give. The remedy has to come from outside the
+  mobility stream.</p>
+  </div>
+</section>
+
+<section>
+  <p class="eyebrow">Summary</p>
+  <h2>Opportunities and limitations</h2>
+  <div class="body center">
+  <div class="claim" style="max-width:31em">
+    <p class="b">Mobility recovers the mixing structure of attributes that space already
+    sorts. Screen the dimension first, and report a null.</p>
+  </div>
+  <div class="claim alt" style="max-width:31em">
+    <p class="b">The binding constraint is the demographic label, not the contacts, and no
+    feature built from mobility fixes a label that is not identified.</p>
+  </div>
+  </div>
+  <p class="footnote">Ankit Ramakrishnan &nbsp;&middot;&nbsp;
+  ramakrishnan.ank@northeastern.edu &nbsp;&middot;&nbsp; Epistorm, Network Science
+  Institute, Northeastern University. Full methods note available on request, and thanks to
+  the Epistorm-Mix team at Indiana.</p>
+</section>
+
+
+
+<section>
+  <p class="eyebrow">Appendix · A1</p>
+  <h2>Construction, in full</h2>
+  <div class="body">
+  <p class="big-math small">
+    \[ \widetilde M[a,b] = \sum_{i,j} W_{ij}\, p_a^i\, p_b^j,
+       \qquad M[a,b] = \frac{\widetilde M[a,b]}{N_a},
+       \qquad \widetilde M[a,b] = \widetilde M[b,a] \]
+  </p>
+  <ul style="font-size:.7em;margin-top:.9em">
+    <li>pair weighting: intra-unit \(n(n-1)/N(N-1)\), inter-unit
+      \(w_{\text{ego}}w_{\text{alter}}\); a null or zero weight contributes \(0\)</li>
+    <li>panels are 56 days starting every 28, so overlapping dates are resolved by an
+      edge-aware 14-day trim before any matrix is formed</li>
+    <li>symmetrisation on the extensive matrix, then per-capita rescaling, so reciprocity
+      \(M[a,b]N_a = M[b,a]N_b\) holds by construction</li>
+    <li>three metrics carried throughout: distinct contacts, total contacts and contact
+      duration. Everything shown is distinct contacts per capita</li>
+  </ul>
+  </div>
+  <p class="footnote">Full derivations are in the methods note, available on request.</p>
+</section>
+
+<section>
+<section>
+  <p class="eyebrow">Appendix · A2</p>
+  <h2>Null 1: the commute-flow outer product</h2>
+  <div class="body center">
+  <p class="big-math stack">
+    \[ F^{\text{sym}}_{ij} \;=\; \tfrac{1}{2}\big(F_{ij} + F_{ji}\big) \]
+  </p>
+  <p class="big-math stack">
+    \[ M^{\text{outer}}[a,b] \;=\; \frac{1}{N_a}\sum_{i,j} F^{\text{sym}}_{ij}\;
+       p_a^i\, p_b^j \]
+  </p>
+  </div>
+  <p class="footnote">\(F_{ij}\) is the ACS county-to-county commuting count, residence
+  \(i\) and workplace \(j\), symmetrised so the extensive matrix is exactly symmetric and
+  reciprocity holds by construction. \(72.6\%\) of its weight is intra-county \(F_{ii}\),
+  and \(36\%\) of off-diagonal edges run one way only, so symmetrising is a modelling
+  choice rather than a formality. The kernel has no timescale and no destination-pool
+  normalisation, which is what motivates null 2. Notation below.</p>
+</section>
+
+<section>
+  <p class="eyebrow">Notation</p>
+  <h2>Null 1: what each symbol is</h2>
+  <div class="body">
+  <table class="rules">
+    <tr><th>symbol</th><th>meaning</th><th>units</th></tr>
+    <tr><td>\(i,\, j\)</td><td>county indices: residence and workplace</td><td>&mdash;</td></tr>
+    <tr><td>\(a,\, b\)</td><td>demographic bin indices, of the ego and the contact</td><td>&mdash;</td></tr>
+    <tr><td>\(F_{ij}\)</td><td>ACS commuters living in \(i\) and working in \(j\);
+        \(F_{ii}\) is the within-county row and holds \(72.6\%\) of the weight</td>
+        <td>workers</td></tr>
+    <tr><td>\(F^{\text{sym}}_{ij}\)</td><td>the same flow symmetrised,
+        \(\tfrac{1}{2}(F_{ij}+F_{ji})\), so an edge is a shared opportunity rather than
+        a direction</td><td>workers</td></tr>
+    <tr><td>\(p_a^i\)</td><td>share of county \(i\)'s residents in bin \(a\), from the
+        census; \(\sum_a p_a^i = 1\)</td><td>&mdash;</td></tr>
+    <tr><td>\(N_a\)</td><td>national population in bin \(a\), the per-capita
+        denominator</td><td>people</td></tr>
+    <tr><td>\(M^{\text{outer}}[a,b]\)</td><td>the null's contact matrix</td>
+        <td>contacts per person per day</td></tr>
+  </table>
+  </div>
+  <p class="footnote">The sum runs over county pairs where both endpoints have a census
+  composition row. \(p_a^i p_b^j\) is the proportional-mixing step, identical to the one
+  in our own pipeline, which is what makes this a fair null rather than a different model.</p>
+</section>
+</section>
+
+<section>
+<section>
+  <p class="eyebrow">Appendix · A3</p>
+  <h2>Null 2: the GLEAM-style kernel</h2>
+  <div class="body center">
+  <p class="big-math stack">
+    \[ T_{ii} = \frac{1}{1+\sigma_i/\tau}, \qquad
+       T_{ij} = \frac{\sigma_{ij}/\tau}{1+\sigma_i/\tau}\;(j \neq i), \qquad
+       \textstyle\sum_j T_{ij} = 1 \]
+  </p>
+  <p class="big-math stack">
+    \[ N_a^{(j)} = \sum_i p_a^i N_i T_{ij}, \qquad N^{*}_j = \sum_i N_i T_{ij} \]
+  </p>
+  <p class="big-math stack">
+    \[ M^{\text{GLEAM}}[a,b] = \frac{1}{N_a}\sum_i p_a^i N_i \sum_j T_{ij}
+       \frac{N_b^{(j)}}{N^{*}_j} = \frac{1}{N_a}\sum_j
+       \frac{N_a^{(j)} N_b^{(j)}}{N^{*}_j} \]
+  </p>
+  </div>
+  <p class="footnote">Balcan et al. 2010 §4.2–4.3, with \(\sigma_{ij} = F_{ij}/N_i\) the
+  per-resident commuting rate and \(\tau\) the return rate. \(T_{ij}\) is the stationary
+  fraction of patch \(i\)'s residents currently at \(j\): a mobility matrix, asymmetric,
+  upstream of the demographic step. It enters twice, as time spent at \(j\) and inside
+  who else is there, and summing it out gives the compact right-hand form. Contact within a
+  patch is mass-action with \(c = 1\) absorbed into the scale, drawn uniformly from the
+  \(N^{*}_j\) present. The \(\tau \to \infty\) limit gives pure residence-based mixing,
+  verified to \(3\times10^{-11}\). Notation below.</p>
+</section>
+
+<section>
+  <p class="eyebrow">Notation</p>
+  <h2>Null 2: what each symbol is</h2>
+  <div class="body">
+  <table class="rules">
+    <tr><th>symbol</th><th>meaning</th><th>units</th></tr>
+    <tr><td>\(N_i\)</td><td>population of patch \(i\)</td><td>people</td></tr>
+    <tr><td>\(\sigma_{ij}\)</td><td>per-resident rate of leaving \(i\) for \(j\),
+        \(F_{ij}/N_i\), with \(\sigma_{ii} = 0\)</td><td>day\(^{-1}\)</td></tr>
+    <tr><td>\(\sigma_i\)</td><td>total leaving rate, \(\sum_{j \neq i}\sigma_{ij}\);
+        typically \(0.3\) to \(0.5\) for US counties</td><td>day\(^{-1}\)</td></tr>
+    <tr><td>\(\tau\)</td><td>rate of returning home, so \(1/\tau\) is the mean visit
+        length; \(\tau = 3\) here, an eight-hour workday</td><td>day\(^{-1}\)</td></tr>
+    <tr><td>\(T_{ij}\)</td><td>stationary share of \(i\)'s residents currently at
+        \(j\); rows sum to 1, and it is <strong>not</strong> symmetric</td>
+        <td>&mdash; (a time share)</td></tr>
+    <tr><td>\(N_a^{(j)}\)</td><td>bin-\(a\) people present at \(j\), carrying their
+        residence bin with them</td><td>people</td></tr>
+    <tr><td>\(N^{*}_j\)</td><td>everyone present at \(j\), the mixing-pool size</td>
+        <td>people</td></tr>
+    <tr><td>\(c\)</td><td>per-person contact rate inside a patch, set to \(1\) and
+        absorbed into the overall scale</td><td>day\(^{-1}\)</td></tr>
+  </table>
+  </div>
+  <p class="footnote">\(T_{ij}\) contributes pure time shares and \(c\) contributes the
+  \(\text{day}^{-1}\), which is how \(M^{\text{GLEAM}}\) comes out in contacts per person
+  per day. Dividing by \(N^{*}_j\) is the one thing null 1 lacks: contact rates fall as the
+  local pool grows.</p>
+</section>
+</section>
+
+<section>
+  <p class="eyebrow">Appendix · A4</p>
+  <h2>Pair weighting</h2>
+  <div class="body center">
+  <p class="big-math line">
+    \[ \text{within a unit: } \frac{n(n-1)}{N(N-1)} \qquad
+       \text{across two units: } w_{\text{ego}}\, w_{\text{alter}} \]
+  </p>
+  <p style="margin-top:1.0em">Devices are grouped into units of known population, each
+  with its own panel penetration \(w\). Weighting applies to <strong>pairs</strong>, not
+  to individual contacts. A null or zero weight contributes \(0\).</p>
+  </div>
+  <p class="footnote">Without this step a cell reports where the panel is dense. With it, a
+  cell is a contacts-per-capita rate, the quantity the survey also reports.</p>
+</section>
+
+<section>
+  <p class="eyebrow">Appendix · A5</p>
+  <h2>Cell by cell, race and age</h2>
+  <div class="body">
+  <div class="full"><img src="img/ccs-scatter.svg" alt="cell-by-cell agreement for race and age"></div>
+  </div>
+  <p class="footnote">Distinct contacts per capita against the survey, log axes, identity
+  line. This is the one figure scaled by the fitted global \(\beta\) rather than to a
+  common total, because the identity line is the reference. No exponent is applied. The age
+  panel collapses onto a narrow horizontal band: each of our ego rows spans far less than
+  the survey's.</p>
+</section>
+
+<section>
+  <p class="eyebrow">Appendix · A6</p>
+  <h2>Why the reciprocal variant is the reference</h2>
+  <div class="body center">
+  <p style="font-size:.78em;max-width:33em">The survey matrix is a per-respondent mean,
+  \(M^{\text{survey}}[a,b] = \frac{1}{N_a}\sum_r C^r_{ab}\), and does <strong>not</strong>
+  enforce \(M[a,b]N_a = M[b,a]N_b\). Our matrices and both nulls satisfy it exactly, so
+  comparing against the raw survey charges the model for the reference's own asymmetry.</p>
+  <table class="rules" style="margin-top:.9em;width:74%">
+    <tr><th>Other setting, \(\log r\)</th><th class="num">raw survey</th>
+        <th class="num">reciprocity-corrected</th></tr>
+    <tr><td>race, 25 cells</td><td class="num">0.893</td><td class="num">0.903</td></tr>
+    <tr><td>age 5-year, 181 cells</td><td class="num">0.526</td><td class="num">0.324</td></tr>
+  </table>
+  </div>
+  <p class="footnote">The correction helps race and costs age a great deal: much of our
+  apparent age agreement was the survey's own reporting asymmetry, not shared structure.</p>
+</section>
+
+<section>
+  <p class="eyebrow">Appendix · A7</p>
+  <h2>Calibration: a scale and an exponent</h2>
+  <div class="body">
+  <p class="big-math small">
+    \[ M^{\text{survey}}[a,b] \;\approx\; \beta \,\big(M^{\text{model}}[a,b]\big)^{\gamma} \]
+  </p>
+  <table class="rules" style="width:88%">
+    <tr><th>dimension</th><th class="num">\(\beta\)</th><th class="num">\(\gamma\)</th>
+        <th class="num">\(R^2\)</th><th class="num">within \(2\times\)</th>
+        <th class="num">row spread ratio</th></tr>
+    <tr><td>race, 5 bins</td><td class="num">0.071</td><td class="num">1.16</td>
+        <td class="num">0.815</td><td class="num">80%</td><td class="num">1.26</td></tr>
+    <tr><td>age, 5-year</td><td class="num">0.069</td><td class="num">0.74</td>
+        <td class="num">0.105</td><td class="num">83%</td><td class="num">2.33</td></tr>
+  </table>
+  </div>
+  <p class="footnote">Other setting, reciprocity-corrected. For race \(\gamma \approx 1\),
+  so one scale factor suffices; for age no exponent helps. This fit is reported, never
+  applied to a displayed matrix: \(\gamma\) would bend the colour scale and hide the
+  dynamic-range compression that is the age result. Per-row \((\beta_a,\gamma_a)\) reaches
+  91 to 95% of age cells within \(2\times\) on \(2K\) parameters, so it bounds what any
+  monotone transform can do rather than proposing an estimator.</p>
+</section>
+
+<section>
+  <p class="eyebrow">Appendix · A8</p>
+  <h2>A known defect in the feature side</h2>
+  <div class="body">
+  <p style="font-size:.8em">The stop table clips evening dwell. Stop start dates are
+  derived from the vendor's event date and then clipped to the day boundary, which
+  truncates episodes running past midnight: \(20.2\%\) of raw stops are affected and
+  \(11.66\%\) of all dwell time is discarded.</p>
+  <p style="font-size:.8em;margin-top:.7em">It matters for the behavioural prior, whose
+  features are shares of dwell. It does <strong>not</strong> explain the Other result: the
+  oldest bins are under-represented at every hour of the day, not only in the evening, at
+  \(0.689\) of their population share on a contact-weighted basis.</p>
+  </div>
+  <p class="footnote">Quantified separately from the matrix pipeline; the correction is
+  not yet applied to the results shown.</p>
+</section>
+
+<section>
+  <p class="eyebrow">Appendix · A9</p>
+  <h2>The structure budget</h2>
+  <div class="body">
+  <p class="big-math small">
+    \[ q_i = \bar q + \delta_i
+       \quad\Longrightarrow\quad
+       \text{only } \textstyle\sum_{\text{contacts}} \delta_i \otimes \delta_j
+       \text{ adds rank}, \qquad \lambda = \rho_q \,\mathrm{CV}_q^{2} \]
+  </p>
+  <div class="full"><img src="img/ccs-budget.svg" alt="structure budget"></div>
+  </div>
+  <p class="footnote">\(\rho_q\): correlation of the labels of two people in contact.
+  \(\mathrm{CV}_q\): how much the label varies at all. Splitting the label into a
+  population mean plus a per-device deviation, the mean reproduces proportional mixing
+  exactly, so only the deviations can add rank.</p>
+</section>
+
+<section>
+  <p class="eyebrow">Appendix</p>
+  <h2>How the consequence numbers are computed</h2>
+  <div class="body">
+  <table class="rules">
+    <tr><th>step</th><th>what is done</th></tr>
+    <tr><td>bins</td><td>restrict both matrices to the \(13\) age bins present on both
+        axes; the survey's reliable subset is \(14\) ego by \(13\) alter</td></tr>
+    <tr><td>eigenvector</td><td>\(w, v = \mathrm{eig}(M)\), take the largest real part,
+        normalise \(|v|\) to sum to one. \(M > 0\), so Perron-Frobenius makes that
+        eigenvalue real and the eigenvector positive</td></tr>
+    <tr><td>\(R_0\) ratio</td><td>compare \(\lambda_1/\sum_{ab} M[a,b]\) across the two
+        matrices, so it does not depend on the fitted level: \(0.987\)</td></tr>
+    <tr><td>agreement</td><td>cosine similarity of the two eigenvectors: \(0.979\)</td></tr>
+    <tr><td>\(65+\) weight</td><td>sum the eigenvector over \(65\text{-}69\) to \(80+\),
+        then take the ratio: \(0.78\)</td></tr>
+    <tr><td>effective rank</td><td>singular values normalised to sum to one, then
+        \(1/\sum_k s_k^2\): \(1.11\) against \(3.69\)</td></tr>
+  </table>
+  </div>
+  <p class="footnote">Both quantities are scale-invariant, which is why no calibration is
+  applied. Equal susceptibility is what makes the eigenvector readable as an infection
+  share; with an age-dependent \(s\) the next-generation matrix becomes
+  \(\mathrm{diag}(s)\,M\) and that comparison would need redoing, though the effective rank
+  would not change. Race for comparison: effective rank \(1.91\) against \(2.93\), cosine
+  \(0.957\).</p>
+</section>
+
+<section>
+  <p class="eyebrow">Appendix</p>
+  <h2>Every contrast we ran, with intervals</h2>
+  <div class="body">
+  <div class="full"><img src="img/ccs-effects.svg" alt="effects with bootstrap intervals"></div>
+  </div>
+  <p class="footnote">Five-year bins. Intervals are a <strong>paired cell bootstrap</strong>:
+  resample the 181 matrix cells with replacement, recompute \(\log r\) for both arms against
+  the same resampled reference cells, and take the difference, 4000 times. Other falls
+  \(0.324 \to 0.082\), with zero of 4000 draws favouring the predicted label. Every other
+  alternative we tried is an order of magnitude smaller.</p>
+</section>
+
+<section>
+  <p class="eyebrow">Appendix · A10</p>
+  <h2>References</h2>
+  <div class="body">
+  <ul style="font-size:.62em">
+    <li>Litvinova, M., et al. (2025). Epistorm-Mix: mapping social contact patterns for
+      respiratory pathogen spread in the post-pandemic United States. medRxiv
+      10.1101/2025.11.20.25340662.</li>
+    <li>Balcan, D., Gonçalves, B., Hu, H., Ramasco, J. J., Colizza, V., &amp; Vespignani, A.
+      (2010). Modeling the spatial spread of infectious diseases: the GLobal Epidemic and
+      Mobility computational model. J. Comput. Sci. 1(3), 132–145.</li>
+    <li>Del Valle, S. Y., et al. (2024). Generalized contact matrices. Sci. Adv.
+      10.1126/sciadv.adk4606.</li>
+    <li>Prem, K., Cook, A. R., &amp; Jit, M. (2017). Projecting social contact matrices in 152
+      countries using contact surveys and demographic data. PLOS Comput. Biol. 13(9), e1005697.</li>
+    <li>Mossong, J., et al. (2008). Social contacts and mixing patterns relevant to the
+      spread of infectious diseases. PLOS Med. 5(3), e74.</li>
+  </ul>
+  </div>
+  <p class="footnote">ramakrishnan.ank@northeastern.edu &nbsp;·&nbsp; full methods note
+  available on request.</p>
+</section>
+
+  <div class="logos"><img src="img/netsi-logo.png" alt="Network Science Institute, Northeastern University"><img src="img/roux-monogram.png" alt="The Roux Institute, Northeastern University"><img src="img/epistorm-logo.png" alt="Epistorm"><img src="img/xi-lab-logo.png" alt="Complex Intelligence Lab"></div>
+  <div class="who">Ankit Ramakrishnan</div>
+</div></div>
+
+<script src="vendor/reveal/reveal.js"></script>
+<script src="vendor/reveal/plugin/math.js"></script>
+<script src="vendor/reveal/plugin/notes.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: false,   // hidden for now; 'c/t' shows "current / total"
+    width: 1280,
+    height: 720,
+    center: false,     // style.css pins the title and centres the body itself
+    margin: 0.08,
+    transition: 'none',   // slides cut, no cross-fade (Ankit, 2026-10-02)
+    transitionSpeed: 'fast',
+    katex: { local: 'vendor/katex', delimiters: [
+      { left: '\\[', right: '\\]', display: true },
+      { left: '\\(', right: '\\)', display: false }
+    ] },
+    plugins: [RevealMath.KaTeX, RevealNotes],
+  });
+  // Animations (data-anim) start lazily and play only while their slide is showing.
+  // The layer stack is paced to slide 3's notes: flat SIR 6 s, tilt, cities at 8 s, map at ~15.5 s, outbreak ~19.5 s, models ~24.5 s.
+  const ANIM = { epi: el => startEpidemic(el), levels: el => startLevels(el), sir: el => startSIR(el), sirgeneric: el => startSIR(el, { generic: true }), sirmini: el => startSIR(el, { N: 10, cols: 5, rows: 2, size: 62, by: 92, label: 72, H: 256, names: ['S', 'I', 'R'] }), gleam: el => startGleam(el), lasagna: el => startLasagna(el, { flat: 6000, tilt: 2000, drop: 1500, gap2: 6000, gap3: 2500, zooDelay: 5000 }), mixing: el => startMixing(el), notrandom: el => startNotrandom(el), crowdmixed: el => startCrowd(el, { mode: 'mixed' }), crowdsorted: el => startCrowd(el, { mode: 'sorted' }), household: el => startHousehold(el), settings: el => startSettings(el), surveys: el => startSurveys(el), phones: el => startPhones(el), geohash: el => startGeohash(el), tables: el => startTables(el), scale: el => startScale(el), copresence: el => startCopresence(el), borrow: el => startBorrow(el), pair: el => startPair(el), hetero: el => startHetero(el), entropy: el => startEntropy(el), rankone: el => startRankone(el), ledger: el => startLedger(el), predict: el => startPredict(el), behaviour: el => startBehaviour(el) };
+  // round 2 (2026-10-11): the agenda and its reprise, M into the force of infection, the two nulls, the author callback
+  Object.assign(ANIM, { agenda: el => startAgenda(el), agenda3: el => startAgenda(el, { current: 3 }), minto: el => startMinto(el),
+    sizesnull: el => startSizesNull(el), commutemap: el => startCommuteMap(el), authors: el => startAuthors(el) });
+  const running = new Map();
+  function animSync() {
+    const cur = Reveal.getCurrentSlide();
+    document.querySelectorAll('.anim[data-anim]').forEach(el => {
+      const on = cur && cur.contains(el);
+      if (on && !running.has(el)) running.set(el, ANIM[el.dataset.anim](el));
+      const a = running.get(el); if (a) (on ? a.play() : a.pause());
+    });
+  }
+  // Click-through steps: a slide opts in with fragments that carry the class "step" (a visible line, or
+  // empty spans inside a hidden .steps div). The number showing goes to the slide's animation as
+  // step(n), so the right arrow advances the picture and the left arrow takes it back.
+  function stepSync() {
+    const cur = Reveal.getCurrentSlide(); if (!cur) return;
+    const n = cur.querySelectorAll('.fragment.step.visible').length;
+    cur.querySelectorAll('.anim[data-anim]').forEach(el => { const a = running.get(el); if (a && a.step) a.step(n); });
+  }
+  Reveal.on('ready', () => { animSync(); stepSync(); });
+  Reveal.on('slidechanged', () => { animSync(); stepSync(); });
+  Reveal.on('fragmentshown', stepSync);
+  Reveal.on('fragmenthidden', stepSync);
+</script>
+</body>
+</html>

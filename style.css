@@ -1,0 +1,318 @@
+/* CCS 2026 deck: white page, black ink, left-aligned, PT Sans.
+   Modelled on 40-fall-directed-study/slides/style.css. The only colour is the
+   paper's YlGnBu family, used for emphasis and in the figures. */
+
+@import url("vendor/fonts/fonts.css");   /* vendored, so the talk runs offline */
+
+:root {
+  --r-background-color: #fff;
+  --r-main-font: "PT Sans", Helvetica, sans-serif;
+  --r-main-font-size: 32px;
+  --r-main-color: #000;
+  --r-heading-font: "PT Sans", Helvetica, sans-serif;
+  --r-heading-color: #000;
+  --r-heading-text-transform: none;
+  --r-heading-font-weight: 700;
+  --r-link-color: #000;
+  --r-link-color-dark: #000;
+  --r-link-color-hover: #555;
+  --r-selection-background-color: #000;
+  --r-selection-color: #fff;
+
+  /* YlGnBu anchors, matching deck-ccs2026/figures/make_figs.py */
+  --navy: #253494;
+  --blue: #2c7fb8;
+  --teal: #41b6c4;
+  --pale: #c7e9b4;
+  --grey: #777;
+  --faint: #e0e0e0;
+}
+
+/* The body of a slide is centred on both axes: reveal is initialised with center:true
+   for the vertical axis, and the rules below centre the figure, table, list and maths
+   blocks horizontally. Titles and footnotes are the exception: they hang on the slide's
+   left margin, which keeps a fixed reading anchor from slide to slide. */
+/* Text is left-aligned everywhere: the title, the body copy, the lists, the tables and
+   the caption all hang on the slide's left margin. Only the blocks that are pictures
+   rather than prose -- figures and display equations -- are centred horizontally. */
+.reveal .slides section { text-align: left; }
+
+/* The title sits at the same height on every slide. Reveal's own vertical centring is
+   off (center:false), so each slide is a flex column: a fixed-height header, then the
+   body centred in whatever space is left, then the caption on the bottom edge. A
+   one-line and a two-line title therefore leave the body starting at the same y. */
+/* Fixed geometry, so the title and the caption land on the same two lines on every
+   slide. The height is very nearly reveal's full 720px design height, so the caption
+   sits on the slide's own bottom edge rather than at the end of the content. The body
+   takes all the slack in between. */
+/* Reveal wraps a stack of vertical slides in a parent <section> and gives it the class
+   "stack" at init, so the geometry has to apply to the stack's children instead of the
+   stack itself. Both selectors are needed. */
+.reveal .slides > section:not(.cover):not(.divider):not(.stack),
+.reveal .slides > section.stack > section {
+  display: flex !important; flex-direction: column; height: 688px; overflow: hidden;
+}
+.reveal .slides section > .eyebrow { flex: 0 0 auto; }
+.reveal .slides section > h2 { flex: 0 0 auto; min-height: 2.52em; margin-bottom: 0; }
+/* The body starts directly under the pinned title. Slides whose body is short --
+   an image-only slide, or a few lines that would otherwise sit high on an empty
+   page -- opt into vertical centring with class="body center". */
+.reveal .slides section > .body {
+  flex: 1 1 auto; display: flex; flex-direction: column; justify-content: flex-start;
+  min-height: 0;
+}
+.reveal .slides section > .body.center { justify-content: center; }
+/* A slide whose body is nothing but a figure: centre the figure in the space between
+   the title and the caption, so the gap above and below it is even. */
+.reveal .slides section > .body > .full:only-child { margin-top: auto; margin-bottom: auto; }
+.reveal .slides section > .body > *:first-child { margin-top: 0; }
+.reveal .slides section > .footnote { flex: 0 0 auto; margin-top: auto; }
+
+/* Centred as blocks: figures and display equations only. */
+.reveal .full img { margin-left: auto; margin-right: auto; }
+.reveal .big-math { text-align: center; }
+
+.reveal h2 { font-size: 1.32em; line-height: 1.16; margin: 0 0 0.5em 0; }
+.reveal h3 { font-size: 0.95em; margin: 0 0 0.4em 0; }
+
+/* Lists, including the reference list, hang on the left margin: a centred block of
+   bullets reads badly and the hanging bullet is the alignment cue. */
+.reveal ul, .reveal ol {
+  display: block; text-align: left; max-width: none;
+  margin: 0.2em 0 0.2em 1.1em; padding-left: 0;
+}
+.reveal li { padding-left: 0.1em; }
+.reveal li { margin-bottom: 0.3em; }
+.reveal .slides a { text-decoration: underline; }
+.reveal .slide-number { background: none; color: #000; font-family: var(--r-main-font); }
+.reveal strong { color: var(--navy); }
+
+/* Small grey source line under a figure or claim. */
+.reveal .cite { font-size: 0.5em; color: #666; margin: 0.4em 0 0 0; }
+
+/* Caption under the body, in normal flow so the slide centres as one block, and on
+   the left margin so it lines up with the title above it. */
+.reveal .footnote {
+  font-size: 0.55em; color: #222; margin: 0.9em 0 0 0;
+  padding-top: 0.5em; border-top: 1px solid var(--faint);
+}
+.reveal .gloss { font-size: 0.5em; color: #333; margin: 0.5em 0 0 0; }
+
+/* Section label above the heading, e.g. "Results". */
+.reveal .eyebrow {
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 0.52em; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--grey); margin: 0 0 0.6em 0;
+}
+
+/* Two columns: left a statement, equation or table; right a figure. */
+.reveal .two-col {
+  display: grid; grid-template-columns: 1fr 1fr; align-items: start; gap: 1.6em;
+  text-align: left; margin: 0;
+}
+.reveal .two-col.wide-right { grid-template-columns: 2fr 3fr; }
+.reveal .two-col.wide-left { grid-template-columns: 3fr 2fr; }
+.reveal .two-col img { width: 100%; margin: 0; }
+
+/* A single figure under the title. Every SVG is authored at the same canvas width
+   (FIGW in figures/make_figs.py), so width:100% with no height cap makes the plotted
+   content align on the same left and right edges on every slide, and the type inside
+   the figures renders at the same size throughout. Do not add max-height here: a
+   height cap would shrink a tall figure's width and break that alignment. */
+.reveal .full { margin: 0.2em 0 0 0; }
+.reveal .full img { display: block; width: 100%; margin: 0 auto; }
+.reveal .full.inset img { width: 88%; }
+
+/* Display equations. */
+.reveal .big-math { text-align: center; }
+.reveal .big-math.line { font-size: 1.1em; margin: 0.5em 0; }
+.reveal .big-math.small { font-size: 0.78em; margin: 0.12em 0 0.2em 0; }
+/* Several stacked display equations on one slide: smaller and tighter, so a
+   multi-line derivation cannot run into the title or the caption. */
+.reveal .big-math.stack { font-size: 0.74em; margin: 0.05em 0; line-height: 1.1; }
+
+/* Table with horizontal rules only. */
+.reveal table.rules {
+  border-collapse: collapse; font-size: 0.68em; margin: 0.2em 0; width: 100%;
+  text-align: left;
+}
+.reveal table.rules td, .reveal table.rules th {
+  border: none; border-bottom: 1px solid #000;
+  padding: 0.4em 0.7em 0.4em 0; text-align: left; vertical-align: top;
+}
+.reveal table.rules th { font-weight: 700; }
+.reveal table.rules tr:first-child td { border-top: 1px solid #000; }
+.reveal table.rules td.num, .reveal table.rules th.num { text-align: right; }
+.reveal table.rules small { font-size: 0.72em; color: #555; }
+
+/* Numbered claim blocks: a left rule, no fill, so nothing reads as a card. */
+.reveal .claim {
+  border-left: 3px solid var(--navy); padding: 0.1em 0 0.15em 0.8em;
+  margin: 0 0 0.8em 0; max-width: 30em; text-align: left;
+}
+.reveal .claim .eq { font-size: 0.66em; margin: 0.1em 0 0.05em 0; }
+.reveal .claim.alt { border-left-color: var(--teal); }
+.reveal .claim .t { font-weight: 700; font-size: 0.85em; }
+.reveal .claim .b { font-size: 0.7em; color: #333; margin: 0.05em 0 0 0; }
+
+/* ---- Cover ---- */
+/* A body-copy paragraph is a centred, measured column, not full bleed. */
+/* Body copy is a measured column on the left margin, not full bleed. */
+.reveal .body > p:not(.big-math) { max-width: 33em; margin-left: 0; }
+
+.reveal .cover .wordmark {
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 1.3em; line-height: 1.15; letter-spacing: 0.34em; margin: 0 0 2.6em 0;
+}
+.reveal .cover .wordmark b { font-weight: 700; }
+.reveal .cover .wordmark span { font-weight: 300; }
+.reveal .cover h1 { font-size: 1.62em; margin: 0 0 0.15em 0; }
+.reveal .cover .subtitle { font-size: 0.92em; margin: 0 0 1.8em 0; }
+.reveal .cover .authors { font-size: 0.66em; margin: 0; line-height: 1.45; }
+.reveal .cover .authors b { font-weight: 700; }
+.reveal .cover .affiliation { font-size: 0.56em; letter-spacing: 0.02em; color: #333; margin: 0.9em 0 0 0; }
+.reveal .cover .date { font-size: 0.56em; letter-spacing: 0.02em; color: #333; margin: 0.5em 0 0 0; }
+
+/* Appendix divider. */
+.reveal .divider { display: flex; align-items: center; height: 100%; }
+.reveal .divider h2 { font-size: 1.5em; margin: 0; }
+
+/* KaTeX should inherit the slide's ink, not its own. */
+.reveal .katex { color: #000; }
+
+/* ===================================================================== redesign (ticket 01)
+   Design system for the new main deck: colour roles, icons as CSS masks, type sizes, layout.
+   The appendix keeps the rules above unchanged. */
+:root {
+  --young: #41b6c4; --middle: #2c7fb8; --older: #253494;
+  --infected: #e8590c; --recovered: #c9c9c9;
+  --home: #253494; --work: #2c7fb8; --food: #41b6c4; --shop: #7fcdbb; --away: #e0e0e0;
+}
+.reveal .ic { display: inline-block; width: 1em; height: 1em; background: currentColor;
+  -webkit-mask: var(--m) center / contain no-repeat; mask: var(--m) center / contain no-repeat; }
+.reveal section.nx h2 { font-size: 44px; }
+.reveal section.nx .line { font-size: 28px; color: #555; margin: 0.3em 0 0 0; }
+.reveal section.nx .label { font-size: 20px; color: #555; }
+.reveal section.nx .big { font-size: 128px; font-weight: 700; line-height: 1; color: var(--older); }
+.reveal .todo { border: 2px dashed #9ecae1; border-radius: 10px; color: #6baed6; font-size: 24px;
+  padding: 2.2em 1.6em; text-align: center; }
+.reveal section.cover.nx .cover-visual { position: absolute; inset: 0; z-index: 0; }
+.reveal section.cover.nx > *:not(.cover-visual) { position: relative; z-index: 1; }
+/* slide 1: the title sits left on white, the epidemic fills the right */
+.reveal section.cover.nx { padding: 0 !important; width: 1280px; height: 720px; top: 0 !important; }
+.reveal section.cover.nx .cover-text { position: absolute; left: 0; top: 150px; width: 500px; z-index: 2; }
+.reveal section.cover.nx h1 { font-size: 50px; line-height: 1.08; margin: 0 0 0.3em 0; }
+.reveal section.cover.nx .subtitle { font-size: 28px; color: #555; margin: 0 0 1.6em 0; }
+.reveal section.cover.nx .authors { font-size: 18px; line-height: 1.55; }
+.reveal section.cover.nx .affiliation { font-size: 16px; color: #555; }
+/* the one dark slide: the GLEAM-style world, full bleed behind a white title */
+.reveal section.nx.dark { color: #fff; }
+.reveal section.nx.dark .fullbleed { position: absolute; left: -64px; right: -64px; top: -16px; height: 720px; z-index: 0; }
+.reveal section.nx.dark > *:not(.fullbleed) { position: relative; z-index: 1; }
+.reveal section.nx.dark h2 { color: #fff; }
+.reveal section.nx.dark .eyebrow { color: #8fa0b8; }
+.reveal section.nx.dark .dark-cite { color: #8fa0b8; margin-top: auto; font-size: 16px; }
+/* the new slides may use the full width for their one line */
+.reveal section.nx .body > p.line { max-width: none; }
+/* the GLEAM slide in the light theme: keep the full-bleed layout, drop the dark colours */
+.reveal section.nx.dark.light { color: #000; }
+.reveal section.nx.dark.light h2 { color: #000; }
+.reveal section.nx.dark.light .eyebrow { color: #777; }
+.reveal section.nx.dark.light .light-cite { color: #777; }
+/* the close: three takeaways, each an icon, a number and one line */
+.reveal section.nx .close-grid { display: flex; flex-direction: column; gap: 42px; margin-top: 40px; }
+.reveal section.nx .take { display: flex; align-items: center; gap: 30px; }
+.reveal section.nx .take .ic { width: 72px; height: 72px; flex: none; }
+.reveal section.nx .take .big-s { font-size: 54px; font-weight: 700; line-height: 1; margin: 0; color: #253494; }
+.reveal section.nx .take-h { font-size: 28px; color: #444; margin: 6px 0 0 0; }
+.reveal section.nx .thanks { font-size: 22px; color: #555; margin-top: 58px; }
+.reveal section.present .close-grid .take { animation: take-in 600ms ease-out both; }
+.reveal section.present .close-grid .take:nth-child(2) { animation-delay: 700ms; }
+.reveal section.present .close-grid .take:nth-child(3) { animation-delay: 1400ms; }
+@keyframes take-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+/* the GLEAM slide's inset: one city's compartments, over the South Pacific */
+.reveal section.nx .city-inset { position: absolute !important; left: 0; top: 474px; width: 330px; z-index: 2;
+  background: rgba(255,255,255,0.94); border: 1.5px solid #c5cdd8; border-radius: 14px; padding: 10px 14px 6px; }
+.reveal section.nx .city-inset .inset-h { font-size: 20px; font-weight: 700; color: #444; margin: 0 0 4px 0; }
+.reveal section.nx .credit { font-size: 16px; color: #888; margin: 4px 0 0 0; max-width: none; }
+
+/* Institute logos, bottom left of every slide. A direct child of .slides, so it scales with the
+   slide rather than sitting in the window margin; hidden in the overview grid. */
+.reveal .slides > .logos { position: absolute; left: 0; bottom: 4px; display: flex; align-items: center;
+  gap: 24px; pointer-events: none; z-index: 5; }
+.reveal .slides > .logos img { height: 32px; width: auto; margin: 0; }
+.reveal .slides > .logos img:nth-child(2) { height: 36px; }   /* the Roux mark carries its words smaller */
+.reveal .slides > .logos img:nth-child(3) { height: 34px; }
+.reveal .slides > .logos img:nth-child(4) { height: 27px; }   /* the lab wordmark is long and thin */
+.reveal .slides > .who { position: absolute; right: 84px; bottom: 12px; font-size: 13px; color: #888;
+  letter-spacing: 0.02em; pointer-events: none; z-index: 5; }   /* clear of reveal's arrows */
+.reveal.overview .slides > .logos, .reveal.overview .slides > .who { display: none; }
+
+/* "Collaborators": one panel per institute, round photos. */
+.reveal .team { display: flex; gap: 28px; justify-content: center; }
+.reveal .slides section > .body.team-body { padding-bottom: 72px; }   /* lifts the centred block toward the optical middle */
+.reveal .team .org { background: #f4f6f9; border-radius: 14px; padding: 18px 26px 16px; }
+.reveal .team .org-name { margin: 0 0 16px; font-size: 24px; font-weight: 700; color: #222; line-height: 1.2; }
+.reveal .team .org-name span { display: block; font-size: 18px; font-weight: 400; color: #777; }
+.reveal .team .people { display: flex; gap: 22px; }
+.reveal .team figure { margin: 0; width: 122px; text-align: center; }
+.reveal .team figure img { width: 116px; height: 116px; border-radius: 50%; object-fit: cover; margin: 0 auto 10px; display: block;
+  box-shadow: 0 0 0 3px #fff, 0 0 0 4px #d5dbe3; }
+.reveal .team figcaption { font-size: 18px; line-height: 1.2; color: #333; }
+
+/* Click-through steps (see stepSync in index.html): empty fragments that only count clicks. */
+.reveal .steps { display: none; }
+
+/* SIR intro: the boxes, the equations, and the force of infection called out. */
+.reveal .sir-boxes { display: block; margin: 0 auto 6px; }
+.reveal .sir-eq { font-size: 34px; margin: 6px 0 4px; }
+.reveal .foi { display: flex; align-items: center; justify-content: center; gap: 26px; margin-top: 8px; }
+.reveal .foi .big-math { font-size: 38px; margin: 0; padding: 6px 26px; border: 3px solid #e8590c; border-radius: 14px; }
+.reveal .foi-label { font-size: 22px; color: #555; margin: 0; line-height: 1.35; }
+.reveal .foi-label b { color: #e8590c; }
+
+/* Collaborators: the title slide again, the title on one line; the names become a row of photos. */
+.reveal section.cover.nx.callback .cover-text.callback-text { top: 110px; width: 1180px; }
+.reveal section.cover.nx.callback .authors, .reveal section.cover.nx.callback .affiliation { transition: opacity 0.6s; }
+.reveal section.cover.nx.callback.people-shown .authors, .reveal section.cover.nx.callback.people-shown .affiliation { opacity: 0; }
+.reveal .au-row { position: absolute; left: 0; top: 318px; width: 1180px; height: 300px; z-index: 2; }
+.reveal .au-photo { position: absolute; top: 0; width: 136px; text-align: center; transform-origin: 50% 50%; }
+.reveal .au-photo img { width: 136px; height: 136px; border-radius: 50%; object-fit: cover; border: 6px solid; box-sizing: border-box;
+  margin: 0 0 10px; display: block; }
+.reveal .au-photo span { display: block; width: 168px; margin-left: -16px; font-size: 19px; line-height: 1.2; color: #333; }
+.reveal .au-legend { position: absolute; left: 0; right: 0; top: 236px; display: flex; justify-content: center; gap: 40px; font-size: 19px; color: #555; }
+.reveal .au-legend i { display: inline-block; width: 16px; height: 16px; border-radius: 50%; border: 5px solid; box-sizing: border-box;
+  vertical-align: -2px; margin-right: 8px; }
+.reveal .sir-eq .katex-display, .reveal .foi .katex-display { margin: 0; }
+.reveal .sir-eq { margin: 18px 0 22px; }
+.reveal .foi .big-math { font-size: 34px; padding: 10px 26px; }
+.reveal section.cover.nx.callback .au-thanks { position: absolute; left: 0; width: 1180px; top: 588px; text-align: center; font-size: 22px;
+  color: #444; margin: 0; opacity: 0; transition: opacity 0.6s 1.8s; }
+.reveal section.cover.nx.callback.people-shown .au-thanks { opacity: 1; }
+.reveal section.cover.nx.callback .au-funding { position: absolute; left: 90px; width: 1000px; top: 624px; text-align: center; font-size: 13.5px;
+  line-height: 1.35; color: #777; margin: 0; opacity: 0; transition: opacity 0.6s 2s; }
+.reveal section.cover.nx.callback.people-shown .au-funding { opacity: 1; }
+
+/* The final slide: the title, the authors as a static grid of three, and a note with thanks and funding. */
+.reveal section.cover.nx.final .final-head { position: absolute; left: 0; top: 92px; width: 1180px; }
+.reveal section.cover.nx.final h1 { font-size: 42px; line-height: 1.1; margin: 0; }
+.reveal section.cover.nx.final .subtitle { font-size: 24px; color: #555; margin: 8px 0 0; }
+.reveal section.cover.nx.final > .final-grid { position: absolute; left: 0; top: 250px; width: 836px; z-index: 2; display: grid; grid-template-columns: repeat(3, 1fr);
+  column-gap: 16px; row-gap: 32px; }
+.reveal .final-grid .person { display: flex; align-items: center; gap: 12px; }
+.reveal .final-grid img { width: 66px; height: 66px; flex: 0 0 66px; border-radius: 50%; object-fit: cover; border: 4px solid; box-sizing: border-box; margin: 0; }
+.reveal .final-grid .netsi img { border-color: #253494; }
+.reveal .final-grid .iu img { border-color: #41b6c4; }
+.reveal .final-grid span { display: block; line-height: 1.2; }
+.reveal .final-grid .first { font-size: 18px; color: #333; }
+.reveal .final-grid .last { font-size: 19px; font-weight: 700; color: #222; }
+.reveal .final-grid .role { font-size: 14px; color: #444; margin-top: 3px; white-space: nowrap; }
+.reveal .final-grid .aff { font-size: 13px; color: #8a8a8a; margin-top: 1px; white-space: nowrap; }
+.reveal section.cover.nx.final > .final-note { position: absolute; left: 852px; top: 250px; width: 328px; z-index: 2; box-sizing: border-box; padding: 22px 26px 24px;
+  background: #f4f6f9; border-radius: 16px; padding: 22px 24px 22px; }
+.reveal .final-note p { margin: 0; }
+.reveal .final-note .thx { font-size: 30px; font-weight: 700; color: #222; }
+.reveal .final-note .mail { font-size: 16px; color: #444; margin: 4px 0 18px; padding-bottom: 16px; border-bottom: 1.5px solid #d6dce4; }
+.reveal .final-note .fund-h { font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #888; margin-bottom: 6px; }
+.reveal .final-note .fund { font-size: 13.5px; line-height: 1.5; color: #555; }
+.reveal .final-note .nobr { white-space: nowrap; }
