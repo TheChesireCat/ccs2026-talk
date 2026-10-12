@@ -80,13 +80,13 @@
     let t0 = null, raf = null;
     function frame(t) {
       if (t0 === null) t0 = t;
-      const e = (t - t0) % opt.cycle;
+      const END = 3800 + 9 * 260 + 300, e = Math.min(t - t0, END);         // plays once, then holds the finished picture
       const go = ease(cl((e - 1200) / 1800));                         // phones travel to the restaurant
       ph.forEach((fo, k) => { const [hx, hy] = homes[k], [tx, ty] = target[k], x = hx + 40 + (tx - hx - 40) * go, y = hy - 88 + (ty - hy + 88) * go;
         fo.setAttribute('x', x - 17); fo.setAttribute('y', y - 17); });
       const m = cl((e - 3100) / 400); link.setAttribute('opacity', m); meet.setAttribute('opacity', m);
       cells.forEach((g, i) => g.setAttribute('opacity', cl((e - 3800 - i * 260) / 300)));
-      raf = requestAnimationFrame(frame);
+      raf = e < END ? requestAnimationFrame(frame) : null;
     }
     return { play() { if (!raf) raf = requestAnimationFrame(frame); }, pause() { cancelAnimationFrame(raf); raf = null; t0 = null; } };
   }
