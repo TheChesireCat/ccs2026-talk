@@ -241,11 +241,14 @@
 .reveal .slides > .logos { position: absolute; left: 0; bottom: 4px; display: flex; align-items: center;
   gap: 24px; pointer-events: none; z-index: 5; }
 .reveal .slides > .logos img { height: 32px; width: auto; margin: 0; }
-.reveal .slides > .logos img:nth-child(2) { height: 36px; }   /* the Roux mark carries its words smaller */
-.reveal .slides > .logos img:nth-child(3) { height: 34px; }
-.reveal .slides > .logos img:nth-child(4) { height: 27px; }   /* the lab wordmark is long and thin */
-.reveal .slides > .who { position: absolute; right: 84px; bottom: 12px; font-size: 13px; color: #888;
-  letter-spacing: 0.02em; pointer-events: none; z-index: 5; }   /* clear of reveal's arrows */
+.reveal .slides > .logos img.lg-roux { height: 36px; }   /* the Roux mark carries its words smaller */
+.reveal .slides > .logos img.lg-epi { height: 34px; }
+.reveal .slides > .logos img.lg-xi { height: 27px; }   /* the lab wordmark is long and thin */
+.reveal .slides > .who { position: absolute; right: 84px; bottom: 6px; font-size: 13px; line-height: 1.35; color: #888;
+  letter-spacing: 0.02em; text-align: right; pointer-events: none; z-index: 5; }   /* clear of reveal's arrows */
+.reveal .slides > .who span { display: block; font-size: 12px; color: #999; letter-spacing: 0.01em; }
+/* the title slide carries the author list already, so no name in its footer */
+.on-cover .reveal .slides > .who { display: none; }
 .reveal.overview .slides > .logos, .reveal.overview .slides > .who { display: none; }
 
 /* "Collaborators": one panel per institute, round photos. */
